@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: afilmory/afilmory-core
+  IMAGE_NAME: ZGGSONG/afilmory-core
 
 jobs:
   build-and-push-core:
