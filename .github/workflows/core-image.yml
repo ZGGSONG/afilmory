@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ZGGSONG/afilmory-core
+  IMAGE_NAME: zggsong/afilmory-core
 
 jobs:
   build-and-push-core:
@@ -52,6 +52,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Trigger Dokploy deploy
-        run: |
-          curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
+      # - name: Trigger Dokploy deploy
+      #   run: |
+      #     curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
