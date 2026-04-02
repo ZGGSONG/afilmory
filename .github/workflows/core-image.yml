@@ -22,6 +22,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -32,7 +35,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata (tags & labels)
+      - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -43,15 +46,18 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
 
-      - name: Build and push Docker image (core)
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile.core
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+      # 不用 Dokploy 就删掉这段
       # - name: Trigger Dokploy deploy
-      #   run: |
-      #     curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
+      #   run: curl -X POST "${{ secrets.DOKPLOY_WEBHOOK_URL }}"
